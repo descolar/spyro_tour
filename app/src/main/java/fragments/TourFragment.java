@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,18 @@ public class TourFragment extends Fragment {
 
         // Obtenemos la referencia a las preferencias del usuario para verificar si el tour ya ha sido completado
         sharedPreferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+     // sharedPreferences.edit().putBoolean("tourCompleted", false).apply();
+        boolean tourCompleted = sharedPreferences.getBoolean("tourCompleted", false);
+        Log.d("SharedPreferencesTest", "Valor inicial de tourCompleted: " + tourCompleted);
+
         bottomNavView = requireActivity().findViewById(R.id.navView);
+
+        // 🔹 Si el tour ya fue completado, navegamos directamente a CharactersFragment y salimos
+        if (tourCompleted) {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
+            navController.navigate(R.id.navigation_characters);
+            return; // Evitamos ejecutar el resto del código
+        }
 
         // Deshabilitamos los botones de navegación mientras el usuario esté en el tour
         if (bottomNavView != null) {
@@ -61,11 +73,11 @@ public class TourFragment extends Fragment {
         // Configuramos el botón de inicio del tour
         binding.btnTourStart.setOnClickListener(v -> {
             // Guardamos en SharedPreferences que el usuario ha iniciado el tour
-            sharedPreferences.edit().putBoolean("tourCompleted", true).apply();
+           // sharedPreferences.edit().putBoolean("tourCompleted", true).apply();
 
             // Primero navegamos a `CharactersFragment`
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
-            navController.navigate(R.id.navigation_characters);
+            NavController navController2 = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
+            navController2.navigate(R.id.navigation_characters);
 
             // Luego iniciamos `FragmentTourPersonaje`
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -74,10 +86,10 @@ public class TourFragment extends Fragment {
                         .add(android.R.id.content, tourFragment)
                         .addToBackStack(null)
                         .commit();
-            }, 16); // Equivalente a un frame en 60Hz para evitar parpadeos sin retrasos perceptibles
-
+            }, 16);
         });
     }
+
 
     /**
      * Método que permite bloquear o desbloquear el menú de navegación.

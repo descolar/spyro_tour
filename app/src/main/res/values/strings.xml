@@ -7,38 +7,43 @@
     <string name="text_about">Aplicación desarrollada por \n <b>David Escolar Godínez.</b></string>
     <string name="accept">Aceptar</string>
 
-    //Tour- Home
-    <string name="text_tour_welcome">Bienvenidos</string>
+    <!-- Tour - Inicio -->
+    <string name="text_tour_welcome">¡Bienvenido!</string>
     <string name="text_tour_tittle">Prepárate para explorar el mundo mágico de Spyro en esta guía interactiva.</string>
     <string name="text_tour_button">Comenzar</string>
     <string name="text_tour_motivation">
-    Embárcate en una aventura épica a través del mundo mágico de Spyro.
+    Embárcate en una aventura épica a través del mundo de Spyro.
     Descubre personajes legendarios, mundos fascinantes y desafíos únicos.
     ¡Domina el fuego, recoge tesoros y conviértete en el héroe de esta historia!
-</string>
+    </string>
     <string name="text_tour_tap_flame">
     Toca la llama para comenzar tu viaje y descubrir todo lo que este mundo tiene para ofrecer.
-</string>
-    <string name="text_tour_personaje">
-    Aquí puedes explorar todos los personajes del mundo de Spyro.
-    ¡Descubre sus habilidades y secretos!
-</string>
-    <string name="text_tour_characters">Aquí podrás explorar a todos los personajes del mundo de Spyro.</string>
-    <string name="text_tour_world">En este apartado podrás explorar todos los mundos disponibles en el universo de Spyro.</string>
-    <string name="text_tour_collect">Aquí podrás conocer y consultar cada unos de los coleccionables que pueden aparecer en el mundo de Spyro</string>
-    easter_egg_activated
-    <string name="easter_egg_activated">Easter Egg DESBLOQUEADO</string>
+    </string>
 
+    <!--  Sección de Personajes -->
+    <string name="text_tour_characters">Aquí puedes explorar a todos los personajes del mundo de Spyro. ¡Descubre sus habilidades y secretos!</string>
 
+    <!--  Sección de Mundos -->
+    <string name="text_tour_world">Explora todos los mundos disponibles en el universo de Spyro.</string>
+
+    <!-- Sección de Coleccionables -->
+    <string name="text_tour_collect">Descubre y consulta todos los coleccionables que puedes encontrar en el mundo de Spyro.</string>
+
+    <!--  Easter Egg -->
+    <string name="easter_egg_activated">¡Easter Egg DESBLOQUEADO!</string>
+
+    <!--  Tour Completado -->
     <string name="text_tour_completed">¡Has completado el tour!</string>
     <string name="text_tour_summary">¡Has completado los siguientes pasos en la aplicación de Spyro!</string>
     <string name="text_tour_steps">
-    ✨ Botón para mostrar los diferentes personajes.\n
-    ✨ Botón para mostrar los diferentes mundos.\n
-    ✨ Botón para mostrar los diferentes coleccionables.\n
+    ✨ Botón para explorar los personajes.\n
+    ✨ Botón para explorar los mundos.\n
+    ✨ Botón para explorar los coleccionables.\n
     ✨ Menú de información sobre la aplicación.\n\n
     ¡Ya sabes cómo utilizar la aplicación! Pulsa la imagen inferior para empezar a disfrutar.
 </string>
+
+    <!-- Botones -->
     <string name="btn_start">Comenzar</string>
 
 </resources>

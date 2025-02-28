@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,8 @@ public class FragmentTourResumen extends Fragment {
         // Guardamos en `SharedPreferences` que el usuario ha completado el Tour
         SharedPreferences preferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         preferences.edit().putBoolean("tourCompleted", true).apply();
-
+        boolean tourCompleted = preferences.getBoolean("tourCompleted", false);
+        Log.d("SharedPreferencesTest", "Valor inicial de tourCompleted: " + tourCompleted);
         // Eliminamos la vista del fondo del tour si aún está visible
         View fondoTour = requireActivity().findViewById(R.id.fondoTour);
         if (fondoTour != null) {

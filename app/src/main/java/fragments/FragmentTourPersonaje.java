@@ -62,7 +62,7 @@ public class FragmentTourPersonaje extends Fragment {
         // Esperamos a que la UI termine de renderizarse antes de mostrar la mano
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             binding.handPointer.bringToFront();
-            binding.handPointer.setTranslationZ(10f);  // 🔹 Mayor prioridad en la jerarquía de vistas
+            binding.handPointer.setTranslationZ(10f);  // Mayor prioridad en la jerarquía de vistas
             binding.handPointer.setVisibility(View.VISIBLE);
         }, 200);
 
@@ -74,7 +74,11 @@ public class FragmentTourPersonaje extends Fragment {
             avanzarTutorial();
         });
 
-        binding.btnSalir.setOnClickListener(v -> cerrarTutorial());
+        // Configuramos el botón de salida para reiniciar el tour al salir
+        binding.btnSalir.setOnClickListener(v -> {
+            cerrarTutorial();
+            preferences.edit().putBoolean("tourCompleted", false).apply(); //Restablecemos el tour para que se muestre la próxima vez
+        });
     }
     /**
      * Avanza al siguiente etapa del tutorial.
