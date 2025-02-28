@@ -49,7 +49,6 @@ public class TourFragment extends Fragment {
 
         // Obtenemos la referencia a las preferencias del usuario para verificar si el tour ya ha sido completado
         sharedPreferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-     // sharedPreferences.edit().putBoolean("tourCompleted", false).apply();
         boolean tourCompleted = sharedPreferences.getBoolean("tourCompleted", false);
         Log.d("SharedPreferencesTest", "Valor inicial de tourCompleted: " + tourCompleted);
 

@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 📌 Fondo semitransparente que bloquea toques -->
+    <!--  Fondo semitransparente que bloquea toques -->
     <View
         android:id="@+id/fondoTransparente"
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:focusable="true"
         android:elevation="5dp"/>
 
-    <!-- 📌 Rectángulo con texto en el centro -->
+    <!--  Rectángulo con texto en el centro -->
     <LinearLayout
         android:id="@+id/tutorialBox"
         android:layout_width="300dp"
@@ -29,13 +29,13 @@
             android:id="@+id/tutorialText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_tour_personaje"
+            android:text="@string/text_tour_characters"
             android:textSize="18sp"
             android:textColor="@android:color/white"
             android:gravity="center"/>
     </LinearLayout>
 
-    <!-- 📌 Botones debajo del texto -->
+    <!--  Botones debajo del texto -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:visibility="gone"/>
     </LinearLayout>
 
-    <!-- 📌 La mano debe estar en la ÚLTIMA posición en el XML para asegurarse de que está al frente -->
+
     <ImageView
         android:id="@+id/handPointer"
         android:layout_width="80dp"
@@ -71,7 +71,7 @@
         android:src="@drawable/hand_pointer"
         android:scaleType="centerInside"
         android:visibility="invisible"
-        android:elevation="50dp"/> <!-- 🔹 Elevación alta para asegurar que está sobre todo -->
+        android:elevation="50dp"/>
 
 
 </RelativeLayout>

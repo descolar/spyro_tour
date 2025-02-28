@@ -10,7 +10,7 @@
 
 >
 
-    <!-- 📌 Fondo semitransparente que bloquea interacciones -->
+    <!--  Fondo semitransparente que bloquea interacciones -->
     <View
         android:id="@+id/fondoTour"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:focusable="true"
         android:background="@color/semi_transparent_black"/>
 
-    <!-- 📌 Contenedor del contenido del tour -->
+    <!--  Contenedor del contenido del tour -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +27,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- 📌 Título Bienvenida con fuente personalizada -->
+        <!--  Título Bienvenida con fuente personalizada -->
         <TextView
             android:id="@+id/txtWelcome"
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:textSize="64sp"
             android:textStyle="bold" />
 
-        <!-- 📌 Texto introductorio -->
+        <!--  Texto introductorio -->
         <TextView
             android:id="@+id/txtIntro"
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:textColor="@color/white"
             android:textSize="14sp" />
 
-        <!-- 📌 Imagen de Spyro -->
+        <!--  Imagen de Spyro -->
         <ImageView
             android:id="@+id/imgSpyroLogo"
             android:layout_width="184dp"
@@ -60,7 +60,7 @@
             android:layout_marginBottom="16dp"
             android:src="@drawable/spyro_tour" />
 
-        <!-- 📌 Descripción del tour -->
+        <!-- Descripción del tour -->
         <TextView
             android:id="@+id/txtDescription"
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <!-- 📌 Texto invitando a tocar la llama -->
+        <!-- Texto invitando a tocar la llama -->
         <TextView
             android:id="@+id/txtTapFlame"
             android:layout_width="match_parent"
@@ -86,7 +86,7 @@
             android:textColor="@color/white"
             android:textSize="14sp" />
 
-        <!-- 📌 Botón de inicio del tour -->
+        <!--  Botón de inicio del tour -->
         <ImageButton
             android:id="@+id/btnTourStart"
             android:layout_width="120dp"

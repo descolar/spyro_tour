@@ -46,6 +46,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout> <!-- Cierre correcto del bloque de video -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout> <!-- Cierre del ConstraintLayout principal -->
+</androidx.constraintlayout.widget.ConstraintLayout>
