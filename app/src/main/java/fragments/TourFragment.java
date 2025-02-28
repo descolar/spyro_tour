@@ -37,29 +37,31 @@ public class TourFragment extends Fragment {
         sharedPreferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         bottomNavView = requireActivity().findViewById(R.id.navView);
 
-        // 📌 Bloquear el menú de navegación mientras el tour está activo
-        bloquearMenu(true);
+        // ✅ Dejar los botones visibles pero DESHABILITADOS en `FragmentTour`
+        if (bottomNavView != null) {
+            bottomNavView.setEnabled(false);
+            for (int i = 0; i < bottomNavView.getMenu().size(); i++) {
+                bottomNavView.getMenu().getItem(i).setEnabled(false);
+            }
+        }
 
         binding.btnTourStart.setOnClickListener(v -> {
-            // Guardamos que la guía ya fue vista
             sharedPreferences.edit().putBoolean("tourCompleted", true).apply();
 
-            // 📌 Habilitar el menú de navegación antes de la transición
-            bloquearMenu(false);
-
-            // Navegar a la pantalla de personajes
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
-            navController.navigate(R.id.action_tourFragment_to_navigation_characters);
-
-            // Mostrar `FragmentTourPersonaje` encima después de la navegación
+            // ✅ Iniciar `FragmentTourPersonaje`
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 FragmentTourPersonaje tourFragment = new FragmentTourPersonaje();
                 requireActivity().getSupportFragmentManager().beginTransaction()
-                        .add(android.R.id.content, tourFragment) // Se superpone sobre toda la pantalla
+                        .replace(android.R.id.content, tourFragment)
+                        .addToBackStack(null)
                         .commit();
-            }, 500); // Pequeño retraso para asegurarnos de que la navegación se complete antes
+            }, 300);
         });
     }
+
+
+
+
 
     private void bloquearMenu(boolean bloquear) {
         if (bottomNavView != null) {
