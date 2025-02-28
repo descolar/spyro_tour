@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import dam.pmdm.spyrothedragon.R;
 import dam.pmdm.spyrothedragon.databinding.FragmentTourResumenBinding;
 
@@ -53,26 +56,38 @@ public class FragmentTourResumen extends Fragment {
     private void finalizarTour() {
         if (!isAdded() || getActivity() == null) return;
 
-        // 🔹 Guardamos en SharedPreferences que el usuario completó el Tour
+        // ✅ Guardamos en SharedPreferences que el usuario completó el Tour
         SharedPreferences preferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         preferences.edit().putBoolean("tourCompleted", true).apply();
 
-        // 🔹 Quitamos cualquier fondo del tour antes de eliminar el fragmento
-        View rootView = requireActivity().findViewById(android.R.id.content);
-        rootView.setBackground(null); // ✅ Elimina el fondo residual
+        // ✅ Asegurar que `fondoTour` desaparece antes de cerrar
+        View fondoTour = requireActivity().findViewById(R.id.fondoTour);
+        if (fondoTour != null) {
+            fondoTour.setVisibility(View.GONE);
+        }
 
-        // 🔹 Eliminamos este fragmento de manera segura
-        getParentFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+        // ✅ Habilitar botones del `BottomNavigationView`
+        BottomNavigationView bottomNavView = requireActivity().findViewById(R.id.navView);
+        if (bottomNavView != null) {
+            bottomNavView.setEnabled(true);
+            for (int i = 0; i < bottomNavView.getMenu().size(); i++) {
+                bottomNavView.getMenu().getItem(i).setEnabled(true);
+            }
+        }
 
-        // 🔹 Pequeño delay para asegurar que el fragmento se ha eliminado antes de navegar
+        // ✅ Pequeño retraso antes de navegar para evitar interferencias
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (!isAdded() || getActivity() == null) return;
 
-            // 🔹 Navegamos a la pestaña de personajes
+            // ✅ Navegar a `CharactersFragment`
             NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
             navController.navigate(R.id.navigation_characters);
-        }, 300); // ⏳ Espera 300ms para evitar conflictos
+
+            // ✅ Eliminar `FragmentTourResumen` después de navegar
+            getParentFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+        }, 300);
     }
+
 
 
     @Override
