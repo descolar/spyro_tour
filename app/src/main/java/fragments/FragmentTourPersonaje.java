@@ -80,19 +80,27 @@ public class FragmentTourPersonaje extends Fragment {
 
 
     private void mostrarResumen() {
-        // 🔹 Ocultamos los elementos del tour antes de mostrar el resumen
+        // ✅ Asegurar que el fondo desaparezca ANTES de navegar al resumen
+        View fondoTour = requireActivity().findViewById(R.id.fondoTour);
+        if (fondoTour != null) {
+            fondoTour.setVisibility(View.GONE);
+        }
+
+        // ✅ Ocultar elementos de `FragmentTourPersonaje`
         binding.tutorialBox.setVisibility(View.GONE);
         binding.handPointer.setVisibility(View.GONE);
         binding.btnSeguir.setVisibility(View.GONE);
         binding.btnSalir.setVisibility(View.GONE);
 
+        // ✅ Pequeño delay antes de mostrar `FragmentTourResumen` para evitar parpadeos
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             FragmentTourResumen tourResumenFragment = new FragmentTourResumen();
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .add(android.R.id.content, tourResumenFragment)
+                    .replace(android.R.id.content, tourResumenFragment)  // ✅ Reemplazar en la pantalla completa
                     .commit();
-        }, 500);
+        }, 300);
     }
+
 
 
 

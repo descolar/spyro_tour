@@ -37,7 +37,7 @@ public class TourFragment extends Fragment {
         sharedPreferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         bottomNavView = requireActivity().findViewById(R.id.navView);
 
-        // ✅ Dejar los botones visibles pero DESHABILITADOS en `FragmentTour`
+        // ✅ Deshabilitar los botones pero dejarlos visibles
         if (bottomNavView != null) {
             bottomNavView.setEnabled(false);
             for (int i = 0; i < bottomNavView.getMenu().size(); i++) {
@@ -48,16 +48,21 @@ public class TourFragment extends Fragment {
         binding.btnTourStart.setOnClickListener(v -> {
             sharedPreferences.edit().putBoolean("tourCompleted", true).apply();
 
-            // ✅ Iniciar `FragmentTourPersonaje`
+            // ✅ Primero navegamos a `CharactersFragment`
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
+            navController.navigate(R.id.navigation_characters);
+
+            // ✅ Luego iniciamos `FragmentTourPersonaje`
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 FragmentTourPersonaje tourFragment = new FragmentTourPersonaje();
                 requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(android.R.id.content, tourFragment)
+                        .add(android.R.id.content, tourFragment) // 🔹 Se superpone sobre `CharactersFragment`
                         .addToBackStack(null)
                         .commit();
-            }, 300);
+            }, 500);
         });
     }
+
 
 
 
