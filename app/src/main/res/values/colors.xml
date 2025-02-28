@@ -7,4 +7,15 @@
     <color name="yellow2">#88ffffff</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+
+    <color name="black_transparent">#80000000</color>
+    <color name="gray">#808080</color>
+    <color name="transparent_black">#80000000</color>
+    <color name="purple_primary">#6A0DAD</color> <!-- Un morado fuerte estilo Spyro -->
+
+    <color name="semi_transparent_black">#99000000</color>
+
+
+
+
 </resources>

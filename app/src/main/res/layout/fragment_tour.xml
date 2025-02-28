@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_spyro_tour"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 📌 Fondo semitransparente que bloquea interacciones -->
+    <View
+        android:id="@+id/fondoTour"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/semi_transparent_black"/>
+
+    <!-- 📌 Contenedor del contenido del tour -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- 📌 Título Bienvenida con fuente personalizada -->
+        <TextView
+            android:id="@+id/txtWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/magic_school"
+            android:text="@string/text_tour_welcome"
+            android:textColor="@color/white"
+            android:textSize="64sp"
+            android:textStyle="bold" />
+
+        <!-- 📌 Texto introductorio -->
+        <TextView
+            android:id="@+id/txtIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/text_tour_tittle"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <!-- 📌 Imagen de Spyro -->
+        <ImageView
+            android:id="@+id/imgSpyroLogo"
+            android:layout_width="184dp"
+            android:layout_height="205dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/spyro_tour" />
+
+        <!-- 📌 Descripción del tour -->
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/text_tour_motivation"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <!-- 📌 Texto invitando a tocar la llama -->
+        <TextView
+            android:id="@+id/txtTapFlame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/text_tour_tap_flame"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <!-- 📌 Botón de inicio del tour -->
+        <ImageButton
+            android:id="@+id/btnTourStart"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_tour" />
+    </LinearLayout>
+</FrameLayout>

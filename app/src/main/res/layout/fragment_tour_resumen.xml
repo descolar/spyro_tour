@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_spyro_tour"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Fondo semitransparente que bloquea interacciones -->
+    <View
+        android:id="@+id/fondoTour"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/semi_transparent_black"/>
+
+    <!-- Contenedor del contenido del tour -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Título de finalización del tour -->
+        <TextView
+            android:id="@+id/txtTourCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/magic_school"
+            android:text="@string/text_tour_completed"
+            android:textColor="@color/white"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
+        <!-- Texto resumen del tour -->
+        <TextView
+            android:id="@+id/txtSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/text_tour_summary"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <!-- Imagen decorativa de Spyro (opcional) -->
+        <ImageView
+            android:id="@+id/imgSpyroResumen"
+            android:layout_width="184dp"
+            android:layout_height="205dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/spyro_tour" />
+
+        <!-- Lista de pasos completados -->
+        <TextView
+            android:id="@+id/txtTourSteps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/text_tour_steps"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <!-- Botón de finalizar -->
+        <ImageButton
+            android:id="@+id/btnFinalizarTour"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/spyro_end_tour" />
+    </LinearLayout>
+</FrameLayout>

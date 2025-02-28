@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/navigation_characters">
+    app:startDestination="@+id/tourFragment"
+    >
 
+    <!-- Secciones principales ya incluidas en el proyecto -->
     <fragment
         android:id="@+id/navigation_worlds"
         android:name="dam.pmdm.spyrothedragon.ui.WorldsFragment"
@@ -22,4 +24,46 @@
         android:name="dam.pmdm.spyrothedragon.ui.CollectiblesFragment"
         android:label="@string/collectibles"
         tools:layout="@layout/fragment_collectibles" />
+
+    <!-- 📌 Guía interactiva -->
+    <fragment
+        android:id="@+id/tourFragment"
+        android:name="fragments.TourFragment"
+        android:label="Guía de Inicio"
+        tools:layout="@layout/fragment_tour">
+
+        <!-- 📌 Acceder primero a la pantalla de personajes -->
+        <action
+            android:id="@+id/action_tourFragment_to_navigation_characters"
+            app:destination="@id/navigation_characters" />
+
+        <!-- 📌 Luego, sobre la pantalla de personajes, mostrar el tour -->
+        <action
+            android:id="@+id/action_navigation_characters_to_fragmentTourPersonaje"
+            app:destination="@id/fragmentTourPersonaje"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <!-- 📌 Paso 1 - Explicación de la pestaña Personajes -->
+    <fragment
+        android:id="@+id/fragmentTourPersonaje"
+        android:name="fragments.FragmentTourPersonaje"
+        android:label="Tour Personajes"
+        tools:layout="@layout/fragment_tour_personaje">
+        <!--
+               <action
+                   android:id="@+id/action_fragmentTourPersonaje_to_fragmentTourMundo"
+                   app:destination="@id/fragmentTourMundo"
+                   app:enterAnim="@anim/slide_in_right"
+                   app:exitAnim="@anim/slide_out_left"/>-->
+    </fragment>
+
+    <!-- 📌 Paso 2 - Explicación de la pestaña Mundos
+    <fragment
+        android:id="@+id/fragmentTourMundo"
+        android:name="fragments.FragmentTourMundo"
+        android:label="Tour Mundos"
+        tools:layout="@layout/fragment_tour_mundo"/> -->
 </navigation>
