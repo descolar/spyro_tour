@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dam.pmdm.spyrothedragon.R;
-import dam.pmdm.spyrothedragon.adapters.CollectiblesAdapter_;
+import dam.pmdm.spyrothedragon.adapters.CollectiblesAdapter;
 import dam.pmdm.spyrothedragon.databinding.FragmentCollectiblesBinding;
 import dam.pmdm.spyrothedragon.models.Collectible;
 
@@ -26,7 +26,7 @@ public class CollectiblesFragment extends Fragment {
 
     private FragmentCollectiblesBinding binding;
     private RecyclerView recyclerView;
-    private CollectiblesAdapter_ adapter;
+    private CollectiblesAdapter adapter;
     private List<Collectible> collectiblesList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,7 +36,7 @@ public class CollectiblesFragment extends Fragment {
         recyclerView = binding.recyclerViewCollectibles;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         collectiblesList = new ArrayList<>();
-        adapter = new CollectiblesAdapter_(collectiblesList);
+        adapter = new CollectiblesAdapter(collectiblesList);
         recyclerView.setAdapter(adapter);
 
         loadCollectibles();

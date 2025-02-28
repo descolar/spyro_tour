@@ -1,34 +1,31 @@
 package dam.pmdm.spyrothedragon.adapters;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import dam.pmdm.spyrothedragon.MainActivity;
 import dam.pmdm.spyrothedragon.R;
+import dam.pmdm.spyrothedragon.databinding.ActivityMainBinding;
 import dam.pmdm.spyrothedragon.models.Collectible;
 
 public class CollectiblesAdapter extends RecyclerView.Adapter<CollectiblesAdapter.CollectiblesViewHolder> {
 
     private List<Collectible> list;
-    private int gemsClicked = 0;
-    private final VideoView videoView;
-    private final FrameLayout fullscreenVideoView;
+    private int gemsClicked;
 
-    public CollectiblesAdapter(List<Collectible> collectibleList, VideoView videoView, FrameLayout fullscreenVideoView) {
+    public CollectiblesAdapter(List<Collectible> collectibleList) {
         this.list = collectibleList;
-        this.videoView = videoView;
-        this.fullscreenVideoView = fullscreenVideoView;
     }
 
     @NonNull
@@ -42,45 +39,66 @@ public class CollectiblesAdapter extends RecyclerView.Adapter<CollectiblesAdapte
     public void onBindViewHolder(CollectiblesViewHolder holder, int position) {
         Collectible collectible = list.get(position);
         holder.nameTextView.setText(collectible.getName());
+        gemsClicked = 0;
 
-        // Cargar la imagen
-        int imageResId = holder.itemView.getContext().getResources().getIdentifier(
-                collectible.getImage(), "drawable", holder.itemView.getContext().getPackageName());
+        // Cargar la imagen (simulado con un recurso drawable)
+        int imageResId = holder.itemView.getContext().getResources().getIdentifier(collectible.getImage(), "drawable", holder.itemView.getContext().getPackageName());
         holder.imageImageView.setImageResource(imageResId);
 
-        // Solo activar Easter Egg si el coleccionable es "Gemas"
         if (collectible.getName().equals("Gemas")) {
             holder.itemView.setOnClickListener(view -> {
                 gemsClicked++;
+                Log.d("Clicke","has clicjado: "+gemsClicked);
+                if (gemsClicked == 4) {
+                    ActivityMainBinding binding = ((MainActivity) holder.itemView.getContext()).getBinding();
 
-                if (gemsClicked == 4) { // Se activa tras 4 clics
-                    gemsClicked = 0; // Reiniciamos el contador
-
-                    // 📌 Verificamos que `videoView` y `fullscreenVideoView` no sean `null`
-                    if (videoView == null || fullscreenVideoView == null) return;
-
-                    // 📌 Mostrar el VideoView y cargar el video
+                    // Preparar el video
                     String path = "android.resource://" + holder.itemView.getContext().getPackageName() + "/" + R.raw.video;
-                    videoView.setVideoURI(Uri.parse(path));
-                    fullscreenVideoView.setVisibility(View.VISIBLE);
+                    binding.videoView.setVideoURI(Uri.parse(path));
+                    binding.fullscreenVideoView.setVisibility(View.VISIBLE);
 
-                    // 📌 Configurar el comportamiento del VideoView
-                    videoView.setOnPreparedListener(mp -> {
+                    // Reproducir el video
+                    binding.videoView.setOnPreparedListener(mp -> {
+                        // Vídeo con el máximo tamaño en función de la pantalla
+                        int videoWidth = mp.getVideoWidth();
+                        int videoHeight = mp.getVideoHeight();
+                        float videoProportion = (float) videoWidth / (float) videoHeight;
+
+                        int screenWidth = binding.getRoot().getWidth();
+                        int screenHeight = binding.getRoot().getHeight();
+                        float screenProportion = (float) screenWidth / (float) screenHeight;
+
+                        ViewGroup.LayoutParams layoutParams = binding.videoView.getLayoutParams();
+
+                        if (videoProportion > screenProportion) {
+                            layoutParams.width = screenWidth;
+                            layoutParams.height = (int) (screenWidth / videoProportion);
+                        } else {
+                            layoutParams.width = (int) (screenHeight * videoProportion);
+                            layoutParams.height = screenHeight;
+                        }
+
+                        binding.videoView.setLayoutParams(layoutParams);
+
                         mp.start();
-                        Toast.makeText(holder.itemView.getContext(), R.string.easter_egg_activated, Toast.LENGTH_SHORT).show();
+
+                        // Avisar de activación del Easter Egg
+                        Toast.makeText(holder.itemView.getContext(), holder.itemView.getResources().getString(R.string.easter_egg_activated), Toast.LENGTH_SHORT).show();
                     });
 
-                    // 📌 Cerrar el video si el usuario toca la pantalla
-                    videoView.setOnClickListener(v -> {
-                        videoView.stopPlayback();
-                        fullscreenVideoView.setVisibility(View.GONE);
+                    // Manejar el clic en el video para cerrarlo
+                    binding.videoView.setOnClickListener(v -> {
+                        binding.videoView.stopPlayback();
+                        binding.fullscreenVideoView.setVisibility(View.GONE);
                     });
 
-                    // 📌 Cerrar el video cuando termine
-                    videoView.setOnCompletionListener(mp -> {
-                        videoView.stopPlayback();
-                        fullscreenVideoView.setVisibility(View.GONE);
+                    // Manejar el final del video para cerrarlo
+                    binding.videoView.setOnCompletionListener(mp -> {
+                        binding.videoView.stopPlayback();
+                        binding.fullscreenVideoView.setVisibility(View.GONE);
                     });
+
+                    gemsClicked = 0;
                 }
             });
         }

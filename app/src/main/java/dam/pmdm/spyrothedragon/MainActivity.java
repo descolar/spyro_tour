@@ -106,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
+
+    public ActivityMainBinding getBinding() {
+        return binding;     // Devuelve el binding
+    }
+
     public void playEasterEggVideo() {
         // Validamos que el VideoView y el contenedor de pantalla completa existen antes de continuar
         if (videoView == null || fullscreenVideoView == null) return;

@@ -35,6 +35,7 @@ public class FragmentTourResumen extends Fragment {
 
         binding.btnFinalizarTour.setOnClickListener(v -> finalizarTour());
     }
+    /*
     private void finalizarTour() {
         if (!isAdded() || getActivity() == null) return;
 
@@ -45,8 +46,33 @@ public class FragmentTourResumen extends Fragment {
        // Log.d("TourDebug", "¿El tour ya fue completado?: " + tourCompleted);
         // Eliminamos este fragmento
         getParentFragmentManager().beginTransaction().remove(this).commit();
-    }
 
+
+    }
+   */
+    private void finalizarTour() {
+        if (!isAdded() || getActivity() == null) return;
+
+        // 🔹 Guardamos en SharedPreferences que el usuario completó el Tour
+        SharedPreferences preferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        preferences.edit().putBoolean("tourCompleted", true).apply();
+
+        // 🔹 Quitamos cualquier fondo del tour antes de eliminar el fragmento
+        View rootView = requireActivity().findViewById(android.R.id.content);
+        rootView.setBackground(null); // ✅ Elimina el fondo residual
+
+        // 🔹 Eliminamos este fragmento de manera segura
+        getParentFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+
+        // 🔹 Pequeño delay para asegurar que el fragmento se ha eliminado antes de navegar
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (!isAdded() || getActivity() == null) return;
+
+            // 🔹 Navegamos a la pestaña de personajes
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
+            navController.navigate(R.id.navigation_characters);
+        }, 300); // ⏳ Espera 300ms para evitar conflictos
+    }
 
 
     @Override

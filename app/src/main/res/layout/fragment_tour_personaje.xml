@@ -10,7 +10,7 @@
         android:background="@color/semi_transparent_black"
         android:clickable="true"
         android:focusable="true"
-        android:elevation="5dp"/>
+        />
 
     <!-- 📌 Rectángulo con texto en el centro -->
     <LinearLayout

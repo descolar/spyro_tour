@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dam.pmdm.spyrothedragon.R;
+import dam.pmdm.spyrothedragon.adapters.CharactersAdapter;
 import dam.pmdm.spyrothedragon.models.Character;
-import dam.pmdm.spyrothedragon.adapters.CharactersAdapter_;
 import dam.pmdm.spyrothedragon.databinding.FragmentCharactersBinding;
 
 
@@ -28,7 +28,7 @@ public class CharactersFragment extends Fragment {
     private FragmentCharactersBinding binding;
 
     private RecyclerView recyclerView;
-    private CharactersAdapter_ adapter;
+    private CharactersAdapter adapter;
     private List<Character> charactersList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,7 +39,7 @@ public class CharactersFragment extends Fragment {
         recyclerView = binding.recyclerViewCharacters;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         charactersList = new ArrayList<>();
-        adapter = new CharactersAdapter_(charactersList);
+        adapter = new CharactersAdapter(charactersList);
         recyclerView.setAdapter(adapter);
 
         // Cargamos los personajes desde el XML
