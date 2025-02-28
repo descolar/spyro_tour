@@ -10,7 +10,7 @@
         android:background="@color/semi_transparent_black"
         android:clickable="true"
         android:focusable="true"
-        />
+        android:elevation="5dp"/>
 
     <!-- 📌 Rectángulo con texto en el centro -->
     <LinearLayout
@@ -23,7 +23,7 @@
         android:visibility="gone"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:elevation="10dp"> <!-- 📌 Asegura que el tutorial está por encima del fondo -->
+        android:elevation="10dp">
 
         <TextView
             android:id="@+id/tutorialText"
@@ -62,7 +62,7 @@
             android:visibility="gone"/>
     </LinearLayout>
 
-    <!-- 📌 La mano debe estar por ENCIMA de todo -->
+    <!-- 📌 La mano debe estar en la ÚLTIMA posición en el XML para asegurarse de que está al frente -->
     <ImageView
         android:id="@+id/handPointer"
         android:layout_width="80dp"
@@ -71,6 +71,7 @@
         android:src="@drawable/hand_pointer"
         android:scaleType="centerInside"
         android:visibility="invisible"
-        android:elevation="15dp"/>
+        android:elevation="50dp"/> <!-- 🔹 Elevación alta para asegurar que está sobre todo -->
+
 
 </RelativeLayout>

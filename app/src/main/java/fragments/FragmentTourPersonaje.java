@@ -22,37 +22,53 @@ import androidx.navigation.Navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import dam.pmdm.spyrothedragon.R;
 import dam.pmdm.spyrothedragon.databinding.FragmentTourPersonajeBinding;
-
+/**
+ * Este fragmento gestiona la primera parte del tutorial guiado.
+ * Se encarga de mostrar animaciones y ayudar al usuario en los primeros pasos del juego.
+ */
 public class FragmentTourPersonaje extends Fragment {
 
     private FragmentTourPersonajeBinding binding;
     private int currentStep = 1; // 🔹 Controla en qué paso estamos
 
+    /**
+     * Inflamos la vista del fragmento utilizando View Binding.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTourPersonajeBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
-
+    /**
+     * Método que se ejecuta cuando la vista ha sido creada.
+     * Configuramos los botones y verificamos si el tutorial ya fue completado.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Recuperamos las preferencias para comprobar si el tutorial ya ha sido completado
         SharedPreferences preferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         preferences.edit().clear().apply();
         boolean tourCompleted = preferences.getBoolean("tourCompleted", false);
 
-        Log.d("TourDebug", "¿El tour ya fue completado?: " + tourCompleted);
+        // Si el tutorial ya fue completado, eliminamos el fragmento y salimos
         if (tourCompleted) {
-            //  Si el tour ya fue completado, cerramos el fragmento y no lo mostramos
             getParentFragmentManager().beginTransaction().remove(this).commit();
             return;
         }
 
-        //  Si el tour no ha sido completado, iniciamos el tutorial
-        view.post(() -> moverDedoDesdeCentro(R.id.nav_characters));
+        // Esperamos a que la UI termine de renderizarse antes de mostrar la mano
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            binding.handPointer.bringToFront();
+            binding.handPointer.setTranslationZ(10f);  // 🔹 Mayor prioridad en la jerarquía de vistas
+            binding.handPointer.setVisibility(View.VISIBLE);
+        }, 200);
 
+        // Iniciamos el tutorial guiado desde la sección de personajes
+        view.post(() -> moverDedoDesdeCentro(R.id.nav_characters));
+        // Configuramos la funcionalidad de los botones
         binding.btnSeguir.setOnClickListener(v -> {
             playFireSound();
             avanzarTutorial();
@@ -60,25 +76,47 @@ public class FragmentTourPersonaje extends Fragment {
 
         binding.btnSalir.setOnClickListener(v -> cerrarTutorial());
     }
-
+    /**
+     * Avanza al siguiente etapa del tutorial.
+     * Se aplican animaciones para hacer la transición más fluida.
+     */
     private void avanzarTutorial() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment);
 
-        if (currentStep == 1) {
-            currentStep = 2;
-            navController.navigate(R.id.navigation_worlds);
-            reiniciarTutorial(getString(R.string.text_tour_world), R.id.nav_worlds);
-        } else if (currentStep == 2) {
-            currentStep = 3;
-            navController.navigate(R.id.navigation_collectibles);
-            reiniciarTutorial(getString(R.string.text_tour_collect), R.id.nav_collectibles);
-        } else if (currentStep == 3) {
-            currentStep = 4;
-            mostrarResumen();
-        }
+        // Aplicamos una animación de desvanecimiento antes de cambiar de wtapa
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(binding.tutorialBox, "alpha", 1f, 0f);
+        fadeOut.setDuration(300);
+
+        fadeOut.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Cambiamos de etapa y navegamos al fragmento correspondiente
+                if (currentStep == 1) {
+                    currentStep = 2;
+                    navController.navigate(R.id.navigation_worlds);
+                    reiniciarTutorial(getString(R.string.text_tour_world), R.id.nav_worlds);
+                } else if (currentStep == 2) {
+                    currentStep = 3;
+                    navController.navigate(R.id.navigation_collectibles);
+                    reiniciarTutorial(getString(R.string.text_tour_collect), R.id.nav_collectibles);
+                } else if (currentStep == 3) {
+                    currentStep = 4;
+                    mostrarResumen();
+                }
+
+                // Aplicamos la animación de entrada del nuevo contenido
+                ObjectAnimator fadeIn = ObjectAnimator.ofFloat(binding.tutorialBox, "alpha", 0f, 1f);
+                fadeIn.setDuration(300);
+                fadeIn.start();
+            }
+        });
+
+        fadeOut.start();
     }
 
-
+    /**
+     * Muestra el fragmento de resumen cuando el tutorial ha finalizado.
+     */
     private void mostrarResumen() {
         // ✅ Asegurar que el fondo desaparezca ANTES de navegar al resumen
         View fondoTour = requireActivity().findViewById(R.id.fondoTour);
@@ -92,17 +130,20 @@ public class FragmentTourPersonaje extends Fragment {
         binding.btnSeguir.setVisibility(View.GONE);
         binding.btnSalir.setVisibility(View.GONE);
 
-        // ✅ Pequeño delay antes de mostrar `FragmentTourResumen` para evitar parpadeos
+        // ✅ Retraso antes de iniciar la transición para que la animación sea visible
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             FragmentTourResumen tourResumenFragment = new FragmentTourResumen();
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, tourResumenFragment)  // ✅ Reemplazar en la pantalla completa
-                    .commit();
+                    .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)  // ✅ Aplicar animaciones
+                    .replace(android.R.id.content, tourResumenFragment)
+                    .addToBackStack(null)  // ✅ Asegurar que se puede volver atrás con animación
+                    .commitAllowingStateLoss();  // ✅ Evita que la animación se interrumpa
         }, 300);
     }
 
-
-
+    /**
+     * Reinicia el tutorial cuando cambiamos de paso.
+     */
 
     private void reiniciarTutorial(String nuevoTexto, int nuevoDestino) {
         // 🔹 Ocultar tutorial y resetear posición del dedo
@@ -117,7 +158,9 @@ public class FragmentTourPersonaje extends Fragment {
             moverDedoDesdeCentro(nuevoDestino);
         }, 1000);
     }
-
+    /**
+     * Mueve la dedo desde el centro de la pantalla hasta el destino indicado.
+     */
     private void moverDedoDesdeCentro(int destinoId) {
         // 📌 Iniciar movimiento desde el centro de la pantalla
         float centroX = binding.getRoot().getWidth() / 2f;
@@ -135,7 +178,9 @@ public class FragmentTourPersonaje extends Fragment {
 
         iniciarAnimacion(centroX, centroY, destinoX, destinoY);
     }
-
+    /**
+     * Ejecuta la animación de movimiento de la mano.
+     */
     private void iniciarAnimacion(float inicioX, float inicioY, float destinoX, float destinoY) {
         binding.handPointer.setVisibility(View.VISIBLE);
         binding.handPointer.setX(inicioX);
@@ -161,15 +206,13 @@ public class FragmentTourPersonaje extends Fragment {
 
         animatorSet.start();
     }
-
+    /**
+     * Ejecuta la animación de movimiento de la mano.
+     */
     private void mostrarBotonesConAnimacion() {
-        if (currentStep == 3) {
-            binding.btnSeguir.setVisibility(View.VISIBLE); // Se mantiene el botón de Seguir
-            binding.btnSalir.setVisibility(View.VISIBLE);
-        } else {
-            binding.btnSeguir.setVisibility(View.VISIBLE);
-            binding.btnSalir.setVisibility(View.VISIBLE);
-        }
+
+        binding.btnSeguir.setVisibility(View.VISIBLE);
+        binding.btnSalir.setVisibility(View.VISIBLE);
 
         ObjectAnimator animSeguir = ObjectAnimator.ofFloat(binding.btnSeguir, "alpha", 0f, 1f);
         ObjectAnimator animSalir = ObjectAnimator.ofFloat(binding.btnSalir, "alpha", 0f, 1f);
@@ -179,29 +222,36 @@ public class FragmentTourPersonaje extends Fragment {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animSeguir, animSalir);
-     /*   if (currentStep == 3) {
-           // animatorSet.play(animSeguir); // Solo animar "Seguir" en el último paso
-            animatorSet.playTogether(animSeguir, animSalir);
-        } else {
-            animatorSet.playTogether(animSeguir, animSalir);
-        }
-*/
+
 
         animatorSet.start();
     }
-
+    /**
+     * Reproduce el sonido del fuego cuando se interactúa con el tutorial.
+     */
     private void playFireSound() {
         MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.fire);
         mediaPlayer.setOnCompletionListener(MediaPlayer::release); // Liberar memoria al terminar
         mediaPlayer.start();
     }
 
-
+    /**
+     * Cierra el tutorial y guarda en las preferencias que ya ha sido completado.
+     */
     private void cerrarTutorial() {
         playFireSound();
         SharedPreferences preferences = requireActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         preferences.edit().putBoolean("tourCompleted", true).apply(); // ✅ Guardamos que el usuario ya completó la guía
         getParentFragmentManager().beginTransaction().remove(this).commit();
+
+        // ✅ Habilitar botones del `BottomNavigationView`
+        BottomNavigationView bottomNavView = requireActivity().findViewById(R.id.navView);
+        if (bottomNavView != null) {
+            bottomNavView.setEnabled(true);
+            for (int i = 0; i < bottomNavView.getMenu().size(); i++) {
+                bottomNavView.getMenu().getItem(i).setEnabled(true);
+            }
+        }
     }
 
 

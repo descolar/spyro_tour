@@ -99,44 +99,55 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.accept, null)
                 .show();
     }
-
+    /**
+     * Método para reproducir un sonido en la aplicación.
+     * Recibe el contexto y el identificador del sonido a reproducir.
+     */
     public static void playSound(Context context, int soundId) {
-        // Reproducimos un sonido en la aplicación
+        // Creamos un objeto MediaPlayer con el recurso de sonido indicado
         MediaPlayer mediaPlayer = MediaPlayer.create(context, soundId);
+        // Iniciamos la reproducción del sonido
         mediaPlayer.start();
     }
 
-
+    /**
+     * Método para obtener el objeto de binding de la actividad principal.
+     * Esto nos permite acceder a los elementos de la interfaz sin necesidad de findViewById.
+     * @return Retorna el objeto ActivityMainBinding que contiene la referencia a los elementos de la UI.
+     */
     public ActivityMainBinding getBinding() {
-        return binding;     // Devuelve el binding
+        return binding;
     }
 
+    /**
+     * Método para reproducir un video oculto dentro de la aplicación (Easter Egg).
+     * Se encarga de cargar el video desde los recursos y mostrarlo en pantalla completa.
+     */
     public void playEasterEggVideo() {
-        // Validamos que el VideoView y el contenedor de pantalla completa existen antes de continuar
+        // Verificamos que el VideoView y el contenedor de pantalla completa no sean nulos antes de continuar
         if (videoView == null || fullscreenVideoView == null) return;
 
-        // Cargamos el video desde la carpeta raw
+        // Construimos la ruta del video ubicado en la carpeta raw de los recursos
         String path = "android.resource://" + getPackageName() + "/" + R.raw.video;
         videoView.setVideoURI(Uri.parse(path));
 
-        // Mostramos el video en pantalla completa
+        // Hacemos visible el contenedor para mostrar el video en pantalla completa
         fullscreenVideoView.setVisibility(VideoView.VISIBLE);
 
-        // Reproducimos el video cuando esté listo
-        videoView.setOnPreparedListener(mp -> {
-            mp.start();
-        });
+        // Configuramos un listener para iniciar la reproducción cuando el video esté listo
+        videoView.setOnPreparedListener(mp -> mp.start());
 
-        // Si el usuario toca la pantalla, detenemos el video y ocultamos la vista
+        // Si el usuario toca la pantalla, detenemos la reproducción y ocultamos el video
         videoView.setOnClickListener(v -> {
             videoView.stopPlayback();
             fullscreenVideoView.setVisibility(VideoView.GONE);
         });
 
-        // Al finalizar el video, detenemos la reproducción y ocultamos la vista
+        // Cuando el video termine, detenemos la reproducción y ocultamos la vista
         videoView.setOnCompletionListener(mp -> {
             videoView.stopPlayback();
             fullscreenVideoView.setVisibility(VideoView.GONE);
         });
     }
+
 }
